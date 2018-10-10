@@ -1,5 +1,5 @@
 # homeautomation
-Controlling light and fans using NodeMCU 8266 through web browser
+Controlling light and fans using NodeMCU ESP8266 through web browser
 
 
 code
@@ -8,10 +8,10 @@ code
 
 ESP8266WebServer server;
 uint8_t pin_led = 16;
-char* ssid = "Homeo";
-char* password = "Amarakash";
+char* ssid = "Homeo";  //give the username of the wifi with which the nodemcu will be connected
+char* password = "Amarakash";  //Password of the internet access point
 
-void setup() {
+void setup(void) {
   // put your setup code here, to run once:
   pinMode(pin_led, OUTPUT);
   WiFi.begin(ssid,password);
@@ -22,12 +22,15 @@ void setup() {
     delay(500);
   }
   Serial.println("");
+  Serial.print("Connected to ");
+  Serial.println(ssid);
   Serial.print("IP Address: ");
-  Serial.print(WiFi.localIP());
+  Serial.println(WiFi.localIP());
 
   server.on("/",[](){server.send(200,"text/plain","Hello");});
   server.on("/toogle",toggleLED);
   server.begin();
+  Serial.println("Web server started!");
 }
 
 void loop() {
